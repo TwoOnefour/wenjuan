@@ -73,7 +73,7 @@ while True:
         "finish_status": "1",
         "timestr": str(datetime.datetime.now())[:-7],
         "idy_uuid": "",
-        "project_version": 2,
+        "project_version": 1,  # 如果问卷修改了，那么要填上修改的次数，比如第一次发布就是1，修改一次就是2
         "question_captcha_map_str": "{}",
         "wx_user_info_str": "{}",
         "auto_submit_post": False,
