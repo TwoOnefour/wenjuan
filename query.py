@@ -15,7 +15,7 @@ my_times = 30  # 指定问卷数量
 n = 1  # 指定前几个选项频繁选
 
 if not os.path.exists(os.getcwd() + "/query.json"):
-    with open("./query.json","w",encoding="utf-8") as f:
+    with open(os.getcwd() + "/query.json","w",encoding="utf-8") as f:
         html = requests.get(url, verify=False,headers={
         "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34"
     }).text
@@ -24,7 +24,7 @@ if not os.path.exists(os.getcwd() + "/query.json"):
         f.write(html)
     # print(requests.get(url, verify=False,headers={         "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34"     }).text)
 else:
-    with open("./query.json","r",encoding="utf-8") as f:
+    with open(os.getcwd() + "/query.json","r",encoding="utf-8") as f:
         html = f.read()
 js = json.loads(html)
 last_time = False
