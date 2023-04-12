@@ -20,6 +20,7 @@ if not os.path.exists(os.getcwd() + "/query.json"):
         "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34"
     }).text
         html = html.split("var project = ")[1].split("var")[0].strip("\n").strip(";")
+        html = json.dumps(json.loads(html)["questionpage_list"][0]["question_list"])
         f.write(html)
     # print(requests.get(url, verify=False,headers={         "user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34"     }).text)
 else:
@@ -31,7 +32,7 @@ count = 0
 while True:
     result = copy.deepcopy(js)
     answer = {}
-    for i in result["questionpage_list"][0]["question_list"]:
+    for i in result:
         per_answer = []
         if i["question_type"] != 3:
             if i["cid"][1:] == "19" or i["cid"][1:] == "2": # 指定题目
