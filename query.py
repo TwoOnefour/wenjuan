@@ -11,7 +11,7 @@ urllib3.disable_warnings()
 # with open("./query.json", "r", encoding="utf-8") as f:
 #     result = json.loads(f.read())
 url = "https://www.wenjuan.com/api/rspd/s/UZBZJvzGbXK/"  # 填入问卷url
-my_times = 100  # 指定问卷数量
+my_times = 30  # 指定问卷数量
 n = 1  # 指定前几个选项频繁选
 
 if not os.path.exists(os.getcwd() + "/query.json"):
@@ -34,6 +34,9 @@ while True:
     for i in result["questionpage_list"][0]["question_list"]:
         per_answer = []
         if i["question_type"] != 3:
+            if i["cid"][1:] == "19" or i["cid"][1:] == "2": # 指定题目
+                per_answer.append(i["option_list"][random.randint(0, min(n, len(i["option_list"]) - 1))]["_id"]["$oid"])
+                continue
             if not last_time:
                 per_answer.append(i["option_list"][random.randint(0, min(n, len(i["option_list"]) - 1))]["_id"]["$oid"])
                 answer[i["_id"]["$oid"]] = per_answer
@@ -46,6 +49,9 @@ while True:
             else:
                 loop = random.randint(1, len(i["option_list"]))
             for j in range(loop):
+                if i["cid"][1:] == "6":  # 指定题目
+                    per_answer.append(i["option_list"][random.randint(0, min(n, len(i["option_list"]) - 1))]["_id"]["$oid"])
+                    continue
                 if not last_time:
                     last = random.randint(0, min(n, len(i["option_list"]) - 1))
                     per_answer.append([i["option_list"][last]["_id"]["$oid"]])
@@ -62,10 +68,11 @@ while True:
 
     result = requests.post(url, json = {
         "total_answers_str": json.dumps(answer),
+        # "total_answers_str":"{\"643557a9bac485447e367943\":[\"643557a9bac485447e367941\"],\"643557f0d0af582fc9aaed65\":[\"643557f0d0af582fc9aaed63\"],\"64356581fb0723422a84d2eb\":[[\"64356581fb0723422a84d2e9\"]],\"643564b15d2f8241da591309\":[\"643564b15d2f8241da591307\"],\"643565bd5d2f8241d5932f01\":[[\"643565bd5d2f8241d5932efd\"]],\"643565bd5d2f8241d5932f02\":[[\"643565bd5d2f8241d5932eff\"]],\"643566f6bac485486f205f8e\":[[\"643566f6bac485486f205f89\"]],\"643566f9bac485486e980fbb\":[[\"643566f9bac485486e980fb9\"]],\"643567535d2f8242aeb5fb0a\":[\"64356cc0388b9d659ee7023e\"],\"643567535d2f8242aeb5fb09\":[[\"643567535d2f8242aeb5fb07\"]],\"643568fbbac485486f205f9e\":[\"64356934bac48548696a6bc7\"],\"643568febac485487211be8b\":[\"64356967d0af5833e13467f7\"],\"643568febac485487211be8c\":[\"6435699afb07234230d0c266\"],\"643568febac485487211be8d\":[\"643569b2d0af583398800fa6\"],\"643569dcbac485486df8a0d4\":[[\"64356a645d2f8241d5932faf\"]],\"643569dcbac485486df8a0d5\":[[\"64356a76d0af58339401a808\"]],\"643569dcbac485486df8a0d3\":[\"64356a8ed0af5833e1346818\"],\"643569dcbac485486df8a0d6\":[\"64356aa0d0af583399a00366\"],\"643569dffb0723422a84d346\":[\"64356aaffb0723422ecc85c3\"],\"643569dffb0723422a84d345\":[\"64356ad6bac485486f205fba\"]}",
         "finish_status": "1",
         "timestr": str(datetime.datetime.now())[:-7],
         "idy_uuid": "",
-        "project_version": 1,
+        "project_version": 2,
         "question_captcha_map_str": "{}",
         "wx_user_info_str": "{}",
         "auto_submit_post": False,
